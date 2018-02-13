@@ -2,4 +2,13 @@
     <string name="app_name">Quiz</string>
     <string name="question_label">Pregunta 1</string>
     <string name="btn_check">comprova</string>
+
+    <string name="question_content">Quina es la capital d\'Afganistán?</string>
+    <array name="answers_texts">
+        <item>París</item>
+        <item>Londres</item>
+        <item>Roma</item>
+        <item>Kabul</item>
+    </array>
+    <integer name="solution">4</integer>
 </resources>
