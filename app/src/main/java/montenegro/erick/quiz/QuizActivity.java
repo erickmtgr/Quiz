@@ -23,7 +23,10 @@ public class QuizActivity extends AppCompatActivity {
     private String[][] answers;
     private int[] solutions;
 
+    private int[] responses; // the answers from the user
+
     private int curr; //current question index
+    private Button btn_next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +39,48 @@ public class QuizActivity extends AppCompatActivity {
 
         showQuestion();
 
-        Button btn_check = (Button) findViewById(R.id.btn_check);
-        btn_check.setOnClickListener(new View.OnClickListener() {
+        btn_next = (Button) findViewById(R.id.btn_next);
+        btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkAnswer();
+                nextQuestion();
             }
         });
 
         rgroup = (RadioGroup) findViewById(R.id.answers);
 
+    }
+
+    private void nextQuestion() {
+        responses[curr] = getResponse();
+        //si estic a la ultima pregunta: donar resultats
+        if(curr == questions.length -1){
+            giveResults();
+        }else {
+
+
+            curr++;
+            // si veiem que es la ultima: canviar text botó
+            if (curr == questions.length - 1) {
+                btn_next.setText(R.string.check);
+            }
+
+            showQuestion();
+        }
+    }
+
+    private void giveResults() {
+        int good = 0, bad = 0;
+        for (int i = 0; i < responses.length; i++) {
+            if(responses[i] == solutions[i]){
+                good++;
+            } else {
+                bad++;
+            }
+        }
+        String msg = String.format("Correcte: %d / Incorrectes %d", good, bad);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void loadQuestions() {
@@ -57,6 +92,7 @@ public class QuizActivity extends AppCompatActivity {
         for(int i = 0; i<answ.length; i ++){
              answers[i] = answ[i].split(";");
         }
+        responses = new int [answ.length]; //en principi esta ple de zeros
     }
 
     private void showQuestion() {
@@ -70,13 +106,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void checkAnswer() {
-        int id_checked = rgroup.getCheckedRadioButtonId();
-        int quin = -1;
-        for(int i = 0; i < ids_boton.length; i++){
-            if(id_checked==ids_boton[i]){
-                quin = i+1;
-            }
-        }
+        int quin = getResponse();
         if(quin != -1){
             if (quin == solutions[curr]){
                 Toast.makeText(this, "Correcte!", Toast.LENGTH_SHORT).show();
@@ -85,5 +115,16 @@ public class QuizActivity extends AppCompatActivity {
                 Toast.makeText(this, "Incorrecte...", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private int getResponse() {
+        int id_checked = rgroup.getCheckedRadioButtonId();
+        int quin = -1;
+        for(int i = 0; i < ids_boton.length; i++){
+            if(id_checked==ids_boton[i]){
+                quin = i+1;
+            }
+        }
+        return quin;
     }
 }
