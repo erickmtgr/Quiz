@@ -3,5 +3,9 @@
     <string name="question_label">Pregunta 1</string>
     <string name="check">comprova</string>
     <string name="next">Següent</string>
+    <string name="restart">Reiniciar</string>
+    <string name="results">Results</string>
+    <string name="righ_wrong">Correctes: %1$d, incorrectes: %2$d</string>
+    <string name="question_n">Pregunta %1$d/%2$d</string>
 
 </resources>
